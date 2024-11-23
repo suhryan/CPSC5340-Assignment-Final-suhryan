@@ -16,6 +16,7 @@
 		5CD3E14F2CF1964B00B8D506 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD3E14E2CF1964B00B8D506 /* FirebaseAuth */; };
 		5CD3E1512CF1964B00B8D506 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD3E1502CF1964B00B8D506 /* FirebaseCore */; };
 		5CD3E1532CF1964B00B8D506 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD3E1522CF1964B00B8D506 /* FirebaseFirestore */; };
+		5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		5CD3E13F2CF1923600B8D506 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CD3E1422CF1923600B8D506 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5CD3E1492CF1950B00B8D506 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,9 @@
 		5CD3E13A2CF1922F00B8D506 /* MyNews */ = {
 			isa = PBXGroup;
 			children = (
+				5CD3E1562CF19A8600B8D506 /* Views */,
+				5CD3E1552CF19A7300B8D506 /* ViewModels */,
+				5CD3E1542CF19A5C00B8D506 /* Models */,
 				5CD3E1492CF1950B00B8D506 /* GoogleService-Info.plist */,
 				5CD3E13B2CF1922F00B8D506 /* MyNewsApp.swift */,
 				5CD3E13D2CF1922F00B8D506 /* ContentView.swift */,
@@ -76,6 +81,28 @@
 				5CD3E1422CF1923600B8D506 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5CD3E1542CF19A5C00B8D506 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5CD3E1552CF19A7300B8D506 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5CD3E1562CF19A8600B8D506 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CD3E13E2CF1922F00B8D506 /* ContentView.swift in Sources */,
+				5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */,
 				5CD3E13C2CF1922F00B8D506 /* MyNewsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
