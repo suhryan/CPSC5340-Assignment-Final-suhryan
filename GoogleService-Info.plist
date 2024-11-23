@@ -1,37 +1,30 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2758
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 <?xml version="1.0" encoding="UTF-8"?>\
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\
-<plist version="1.0">\
-<dict>\
-	<key>API_KEY</key>\
-	<string>AIzaSyClpjMDlGUyaRnDSZfGVAprWGcVxtjojGE</string>\
-	<key>GCM_SENDER_ID</key>\
-	<string>72987580956</string>\
-	<key>PLIST_VERSION</key>\
-	<string>1</string>\
-	<key>BUNDLE_ID</key>\
-	<string>edu.auburn.online.rzs0162.MyNews</string>\
-	<key>PROJECT_ID</key>\
-	<string>mynews-6e98c</string>\
-	<key>STORAGE_BUCKET</key>\
-	<string>mynews-6e98c.firebasestorage.app</string>\
-	<key>IS_ADS_ENABLED</key>\
-	<false></false>\
-	<key>IS_ANALYTICS_ENABLED</key>\
-	<false></false>\
-	<key>IS_APPINVITE_ENABLED</key>\
-	<true></true>\
-	<key>IS_GCM_ENABLED</key>\
-	<true></true>\
-	<key>IS_SIGNIN_ENABLED</key>\
-	<true></true>\
-	<key>GOOGLE_APP_ID</key>\
-	<string>1:72987580956:ios:e166217005136fde805dd9</string>\
-</dict>\
-</plist>}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>API_KEY</key>
+    <string>AIzaSyClpjMDlGUyaRnDSZfGVAprWGcVxtjojGE</string>
+    <key>GCM_SENDER_ID</key>
+    <string>72987580956</string>
+    <key>PLIST_VERSION</key>
+    <string>1</string>
+    <key>BUNDLE_ID</key>
+    <string>edu.auburn.online.rzs0162.MyNews</string>
+    <key>PROJECT_ID</key>
+    <string>mynews-6e98c</string>
+    <key>STORAGE_BUCKET</key>
+    <string>mynews-6e98c.firebasestorage.app</string>
+    <key>IS_ADS_ENABLED</key>
+    <false></false>
+    <key>IS_ANALYTICS_ENABLED</key>
+    <false></false>
+    <key>IS_APPINVITE_ENABLED</key>
+    <true></true>
+    <key>IS_GCM_ENABLED</key>
+    <true></true>
+    <key>IS_SIGNIN_ENABLED</key>
+    <true></true>
+    <key>GOOGLE_APP_ID</key>
+    <string>1:72987580956:ios:e166217005136fde805dd9</string>
+</dict>
+</plist>
