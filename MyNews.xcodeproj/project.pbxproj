@@ -19,6 +19,7 @@
 		5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */; };
 		5CD3E15A2CF19EAE00B8D506 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E1592CF19EAE00B8D506 /* UserModel.swift */; };
 		5CD3E15C2CF19F8F00B8D506 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E15B2CF19F8F00B8D506 /* AuthViewModel.swift */; };
+		5CD3E15E2CF1A02400B8D506 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E15D2CF1A02400B8D506 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModel.swift; sourceTree = "<group>"; };
 		5CD3E1592CF19EAE00B8D506 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		5CD3E15B2CF19F8F00B8D506 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		5CD3E15D2CF1A02400B8D506 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		5CD3E1562CF19A8600B8D506 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5CD3E15D2CF1A02400B8D506 /* LoginView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CD3E15E2CF1A02400B8D506 /* LoginView.swift in Sources */,
 				5CD3E15C2CF19F8F00B8D506 /* AuthViewModel.swift in Sources */,
 				5CD3E13E2CF1922F00B8D506 /* ContentView.swift in Sources */,
 				5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */,
