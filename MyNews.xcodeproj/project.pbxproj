@@ -18,6 +18,7 @@
 		5CD3E1532CF1964B00B8D506 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD3E1522CF1964B00B8D506 /* FirebaseFirestore */; };
 		5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */; };
 		5CD3E15A2CF19EAE00B8D506 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E1592CF19EAE00B8D506 /* UserModel.swift */; };
+		5CD3E15C2CF19F8F00B8D506 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3E15B2CF19F8F00B8D506 /* AuthViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		5CD3E1492CF1950B00B8D506 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5CD3E1572CF19E1E00B8D506 /* ArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModel.swift; sourceTree = "<group>"; };
 		5CD3E1592CF19EAE00B8D506 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		5CD3E15B2CF19F8F00B8D506 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		5CD3E1552CF19A7300B8D506 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				5CD3E15B2CF19F8F00B8D506 /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CD3E15C2CF19F8F00B8D506 /* AuthViewModel.swift in Sources */,
 				5CD3E13E2CF1922F00B8D506 /* ContentView.swift in Sources */,
 				5CD3E1582CF19E1E00B8D506 /* ArticleModel.swift in Sources */,
 				5CD3E15A2CF19EAE00B8D506 /* UserModel.swift in Sources */,
