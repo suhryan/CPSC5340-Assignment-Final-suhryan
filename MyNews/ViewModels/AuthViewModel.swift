@@ -12,6 +12,7 @@ import FirebaseAuth
 class AuthViewModel: ObservableObject {
     @Published var isSignedIn = false
     @Published var errorMessage: String? //error messages during login/signup
+    @Published var topicSearch = "" // Track the topic entered in LoginView
 
     // set initial login state
     init() {
@@ -65,6 +66,7 @@ class AuthViewModel: ObservableObject {
             try Auth.auth().signOut()
             DispatchQueue.main.async {
                 self.isSignedIn = false
+                self.topicSearch = "" // Reset the topic search on logout
                 self.errorMessage = nil //to clear LoginView display of error
             }
         } catch let error {

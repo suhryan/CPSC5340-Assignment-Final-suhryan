@@ -9,12 +9,11 @@ import SwiftUI
 
 struct NewsFeedView: View {
     @StateObject private var articleViewModel = ArticleViewModel()
-    @EnvironmentObject var authViewModel: AuthViewModel // Access the authentication view model
+    @EnvironmentObject var authViewModel: AuthViewModel // Access authentication state
 
     var body: some View {
         VStack {
             if let errorMessage = articleViewModel.errorMessage {
-                // Display error message if something goes wrong
                 Text(errorMessage)
                     .foregroundColor(.red)
                     .padding()
@@ -49,10 +48,11 @@ struct NewsFeedView: View {
             }
         }
         .onAppear {
-            articleViewModel.fetchArticles(for: ["technology", "science"]) // Example topics
+            let topic = authViewModel.topicSearch.isEmpty ? ["general"] : [authViewModel.topicSearch]
+            articleViewModel.fetchArticles(for: topic)
         }
         .navigationTitle("News Feed")
-        .navigationBarTitleDisplayMode(.inline) // Ensure single title display
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
