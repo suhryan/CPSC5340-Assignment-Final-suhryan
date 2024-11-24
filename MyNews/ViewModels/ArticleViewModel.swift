@@ -13,17 +13,19 @@ class ArticleViewModel: ObservableObject {
     @Published var errorMessage: String?
     private let apiKey = "11ca150283fe45a3a8746de0a829b7a1"
 
-    /// Fetch articles based on the given topics
-    func fetchArticles(for topics: [String]) {
-        guard !topics.isEmpty else {
-            self.errorMessage = "No topics provided."
-            return
+    /// Fetch articles based on topics or general headliners
+    func fetchArticles(for topics: [String]?) {
+        let urlString: String
+
+        if let topics = topics, !topics.isEmpty {
+            // Combine topics into a single query string for specific topics
+            let query = topics.joined(separator: " OR ")
+            urlString = "https://newsapi.org/v2/everything?q=\(query)&apiKey=\(apiKey)"
+        } else {
+            // Fetch general headlines if no topics provided
+            urlString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)"
         }
-        
-        // Combine topics into a single query string
-        let query = topics.joined(separator: " OR ")
-        let urlString = "https://newsapi.org/v2/everything?q=\(query)&apiKey=\(apiKey)"
-        
+
         guard let url = URL(string: urlString) else {
             self.errorMessage = "Invalid URL."
             return
@@ -55,7 +57,7 @@ class ArticleViewModel: ObservableObject {
                             id: UUID().uuidString,
                             title: article.title,
                             content: article.description ?? "No content available.",
-                            topic: query,
+                            topic: topics?.joined(separator: ", ") ?? "General Headlines",
                             url: article.url,
                             imageURL: article.urlToImage ?? ""
                         )
