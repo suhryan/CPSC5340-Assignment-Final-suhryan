@@ -103,6 +103,26 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    func removeBookmark(_ article: ArticleModel) {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+
+        let userDocRef = db.collection("users").document(userID)
+
+        // Remove the article ID from the user's bookmarks array
+        userDocRef.updateData([
+            "bookmarks": FieldValue.arrayRemove([article.id])
+        ]) { [weak self] error in
+            if let error = error {
+                print("Error removing bookmark: \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    // Remove the article from the local bookmarks array
+                    self?.bookmarks.removeAll { $0.id == article.id }
+                    print("Bookmark removed successfully.")
+                }
+            }
+        }
+    }
 
 
     func fetchBookmarks(userID: String) {
