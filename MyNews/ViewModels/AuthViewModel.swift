@@ -30,30 +30,28 @@ class AuthViewModel: ObservableObject {
             DispatchQueue.main.async {
                 if let error = error as NSError? {
                     self?.handleAuthError(error)
-                } else {
+                } else if let userID = result?.user.uid {
+                    self?.initializeUserDocumentIfMissing(userID: userID)
                     self?.isSignedIn = true
-                    if let userID = result?.user.uid {
-                        self?.fetchBookmarks(userID: userID)
-                    }
                 }
             }
         }
     }
+
 
     func signup(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             DispatchQueue.main.async {
                 if let error = error {
                     self?.errorMessage = error.localizedDescription
-                } else {
+                } else if let userID = result?.user.uid {
+                    self?.initializeUserDocument(userID: userID)
                     self?.isSignedIn = true
-                    if let userID = result?.user.uid {
-                        self?.initializeUserDocument(userID: userID)
-                    }
                 }
             }
         }
     }
+
 
     func logout() {
         do {
@@ -72,12 +70,18 @@ class AuthViewModel: ObservableObject {
     func addBookmark(_ article: ArticleModel) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
-        let docRef = db.collection("users").document(userID)
-        docRef.updateData([
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.updateData([
             "bookmarks": FieldValue.arrayUnion([article.id])
         ]) { error in
             if let error = error {
                 print("Error adding bookmark: \(error.localizedDescription)")
+
+                // Retry by creating the document if it doesn't exist
+                if (error as NSError).code == FirestoreErrorCode.notFound.rawValue {
+                    self.initializeUserDocument(userID: userID)
+                    self.addBookmark(article) // Retry after creating the document
+                }
             } else {
                 DispatchQueue.main.async {
                     self.bookmarks.append(article)
@@ -85,6 +89,7 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+
 
     func fetchBookmarks(userID: String) {
         db.collection("users").document(userID).getDocument { [weak self] snapshot, error in
@@ -105,7 +110,8 @@ class AuthViewModel: ObservableObject {
     }
 
     private func initializeUserDocument(userID: String) {
-        db.collection("users").document(userID).setData([
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.setData([
             "bookmarks": []
         ]) { error in
             if let error = error {
@@ -113,6 +119,18 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+
+    private func initializeUserDocumentIfMissing(userID: String) {
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                print("User document already exists")
+            } else {
+                self.initializeUserDocument(userID: userID)
+            }
+        }
+    }
+
 
     private func handleAuthError(_ error: NSError) {
         if let authErrorCode = AuthErrorCode(rawValue: error.code) {

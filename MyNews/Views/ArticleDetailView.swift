@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ArticleDetailView: View {
     let article: ArticleModel
+    @EnvironmentObject var authViewModel: AuthViewModel
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                // Display article image
                 if let url = URL(string: article.imageURL) {
                     AsyncImage(url: url) { image in
                         image.resizable()
@@ -27,22 +27,31 @@ struct ArticleDetailView: View {
                     }
                 }
 
-                // Display article title
                 Text(article.title)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.bottom)
 
-                // Display article content
                 Text(article.content)
                     .font(.body)
                     .padding(.bottom)
 
-                // Link to full article
                 if let url = URL(string: article.url) {
                     Link("Read Full Article", destination: url)
                         .font(.headline)
                         .foregroundColor(.blue)
+                        .padding(.top)
+                }
+
+                Button(action: {
+                    authViewModel.addBookmark(article)
+                }) {
+                    Text("Bookmark Article")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
                         .padding(.top)
                 }
             }
@@ -52,6 +61,7 @@ struct ArticleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
 /*
 #Preview {
     ArticleDetailView()

@@ -55,11 +55,17 @@ struct NewsFeedView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    authViewModel.logout()
-                }) {
-                    Text("Logout")
-                        .foregroundColor(.red)
+                HStack {
+                    Button(action: {
+                        authViewModel.logout()
+                    }) {
+                        Text("Logout")
+                            .foregroundColor(.red)
+                    }
+                    NavigationLink(destination: BookmarkView()) {
+                        Image(systemName: "bookmark.fill")
+                            .foregroundColor(.blue)
+                    }
                 }
             }
         }

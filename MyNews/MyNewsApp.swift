@@ -19,10 +19,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MyNewsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var authViewModel = AuthViewModel() // Initialize here
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authViewModel) // Pass it to the view hierarchy
         }
     }
 }
