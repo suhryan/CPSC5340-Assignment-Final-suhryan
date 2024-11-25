@@ -25,19 +25,19 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+
     func login(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             DispatchQueue.main.async {
                 if let error = error as NSError? {
                     self?.handleAuthError(error)
                 } else if let userID = result?.user.uid {
-                    self?.initializeUserDocumentIfMissing(userID: userID)
+                    self?.fetchBookmarks(userID: userID) // Fetch bookmarks on login
                     self?.isSignedIn = true
                 }
             }
         }
     }
-
 
     func signup(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
@@ -71,40 +71,73 @@ class AuthViewModel: ObservableObject {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
         let userDocRef = db.collection("users").document(userID)
+        let articleDocRef = db.collection("articles").document(article.id)
+
+        // Add the article to the user's bookmarks
         userDocRef.updateData([
             "bookmarks": FieldValue.arrayUnion([article.id])
         ]) { error in
             if let error = error {
                 print("Error adding bookmark: \(error.localizedDescription)")
-
-                // Retry by creating the document if it doesn't exist
-                if (error as NSError).code == FirestoreErrorCode.notFound.rawValue {
-                    self.initializeUserDocument(userID: userID)
-                    self.addBookmark(article) // Retry after creating the document
-                }
             } else {
                 DispatchQueue.main.async {
                     self.bookmarks.append(article)
                 }
             }
         }
+
+        // Save article details in the `articles` collection
+        articleDocRef.setData([
+            "id": article.id,
+            "title": article.title,
+            "content": article.content,
+            "topic": article.topic,
+            "url": article.url,
+            "imageURL": article.imageURL
+        ]) { error in
+            if let error = error {
+                print("Error saving article details: \(error.localizedDescription)")
+            } else {
+                print("Article saved in Firestore.")
+            }
+        }
     }
 
 
+
     func fetchBookmarks(userID: String) {
-        db.collection("users").document(userID).getDocument { [weak self] snapshot, error in
-            if let data = snapshot?.data(), let bookmarkIDs = data["bookmarks"] as? [String] {
-                self?.fetchArticlesFromIDs(bookmarkIDs)
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.getDocument { [weak self] snapshot, error in
+            if let error = error {
+                print("Error fetching bookmarks: \(error.localizedDescription)")
+                return
             }
+
+            guard let data = snapshot?.data(),
+                  let bookmarkIDs = data["bookmarks"] as? [String], !bookmarkIDs.isEmpty else {
+                DispatchQueue.main.async {
+                    self?.bookmarks = [] // No bookmarks
+                }
+                print("No bookmarks found for user.")
+                return
+            }
+
+            self?.fetchArticlesFromIDs(bookmarkIDs)
         }
     }
 
     private func fetchArticlesFromIDs(_ ids: [String]) {
         db.collection("articles").whereField("id", in: ids).getDocuments { [weak self] snapshot, error in
-            if let documents = snapshot?.documents {
-                DispatchQueue.main.async {
-                    self?.bookmarks = documents.compactMap { try? $0.data(as: ArticleModel.self) }
-                }
+            if let error = error {
+                print("Error fetching bookmarked articles: \(error.localizedDescription)")
+                return
+            }
+
+            DispatchQueue.main.async {
+                self?.bookmarks = snapshot?.documents.compactMap { document in
+                    try? document.data(as: ArticleModel.self)
+                } ?? []
+                print("Fetched bookmarks: \(self?.bookmarks.count ?? 0) articles.")
             }
         }
     }
