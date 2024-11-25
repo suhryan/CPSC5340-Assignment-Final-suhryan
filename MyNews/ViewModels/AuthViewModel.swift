@@ -107,23 +107,57 @@ class AuthViewModel: ObservableObject {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
         let userDocRef = db.collection("users").document(userID)
+        let articleDocRef = db.collection("articles").document(article.id)
 
-        // Remove the article ID from the user's bookmarks array
+        // Step 1: Remove the article ID from the user's bookmarks array
         userDocRef.updateData([
             "bookmarks": FieldValue.arrayRemove([article.id])
         ]) { [weak self] error in
             if let error = error {
-                print("Error removing bookmark: \(error.localizedDescription)")
+                print("Error removing bookmark from user: \(error.localizedDescription)")
             } else {
                 DispatchQueue.main.async {
                     // Remove the article from the local bookmarks array
                     self?.bookmarks.removeAll { $0.id == article.id }
-                    print("Bookmark removed successfully.")
+                    print("Bookmark removed from user successfully.")
                 }
+
+                // Step 2: Check if the article is still bookmarked by other users
+                self?.checkAndDeleteArticleIfUnreferenced(article: article)
             }
         }
     }
 
+    // Helper function to delete the article document if it is no longer referenced
+    private func checkAndDeleteArticleIfUnreferenced(article: ArticleModel) {
+        let usersCollection = db.collection("users")
+
+        // Query all users to check if the article is still referenced in any bookmarks
+        usersCollection.whereField("bookmarks", arrayContains: article.id).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error checking article references: \(error.localizedDescription)")
+                return
+            }
+
+            // If no user references the article, delete it from the `articles` collection
+            if let documents = snapshot?.documents, documents.isEmpty {
+                self.deleteArticleFromArticlesCollection(article: article)
+            }
+        }
+    }
+
+    // Helper function to delete the article from the `articles` collection
+    private func deleteArticleFromArticlesCollection(article: ArticleModel) {
+        let articleDocRef = db.collection("articles").document(article.id)
+
+        articleDocRef.delete { error in
+            if let error = error {
+                print("Error deleting article from articles collection: \(error.localizedDescription)")
+            } else {
+                print("Article deleted from articles collection successfully.")
+            }
+        }
+    }
 
     func fetchBookmarks(userID: String) {
         let userDocRef = db.collection("users").document(userID)
