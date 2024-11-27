@@ -107,7 +107,7 @@ class AuthViewModel: ObservableObject {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
         let userDocRef = db.collection("users").document(userID)
-        let articleDocRef = db.collection("articles").document(article.id)
+        //let articleDocRef = db.collection("articles").document(article.id)
 
         // Step 1: Remove the article ID from the user's bookmarks array
         userDocRef.updateData([

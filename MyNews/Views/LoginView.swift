@@ -23,6 +23,12 @@ struct LoginView: View {
                 .padding()
 
             Spacer()
+            Text("Personalized News Hub")
+            Text("view headliners,")
+            Text("search topics,")
+            Text("add/delete bookmarks")
+            Spacer()
+            Spacer()
 
             VStack {
                 TextField("Email", text: $email)
