@@ -70,23 +70,30 @@ class AuthViewModel: ObservableObject {
     func addBookmark(_ article: ArticleModel) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
+        // Check if the article is already bookmarked
+        if bookmarks.contains(where: { $0.id == article.id }) {
+            print("Article is already bookmarked. Skipping...")
+            return
+        }
+
         let userDocRef = db.collection("users").document(userID)
         let articleDocRef = db.collection("articles").document(article.id)
 
-        // Add the article to the user's bookmarks
+        // Add the article ID to the user's bookmarks array
         userDocRef.updateData([
             "bookmarks": FieldValue.arrayUnion([article.id])
-        ]) { error in
+        ]) { [weak self] error in
             if let error = error {
                 print("Error adding bookmark: \(error.localizedDescription)")
             } else {
                 DispatchQueue.main.async {
-                    self.bookmarks.append(article)
+                    self?.bookmarks.append(article)
+                    print("Bookmark added successfully.")
                 }
             }
         }
 
-        // Save article details in the `articles` collection
+        // Save article details in the `articles` collection if not already present
         articleDocRef.setData([
             "id": article.id,
             "title": article.title,
@@ -94,14 +101,15 @@ class AuthViewModel: ObservableObject {
             "topic": article.topic,
             "url": article.url,
             "imageURL": article.imageURL
-        ]) { error in
+        ], merge: true) { error in
             if let error = error {
                 print("Error saving article details: \(error.localizedDescription)")
             } else {
-                print("Article saved in Firestore.")
+                print("Article saved in Firestore successfully.")
             }
         }
     }
+
 
     func removeBookmark(_ article: ArticleModel) {
         guard let userID = Auth.auth().currentUser?.uid else { return }

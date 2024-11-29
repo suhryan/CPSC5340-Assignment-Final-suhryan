@@ -14,6 +14,7 @@ struct ArticleDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
+                // Article Image
                 if let url = URL(string: article.imageURL) {
                     AsyncImage(url: url) { image in
                         image.resizable()
@@ -27,15 +28,18 @@ struct ArticleDetailView: View {
                     }
                 }
 
+                // Article Title
                 Text(article.title)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.bottom)
 
+                // Article Content
                 Text(article.content)
                     .font(.body)
                     .padding(.bottom)
 
+                // Link to Full Article
                 if let url = URL(string: article.url) {
                     Link("Read Full Article", destination: url)
                         .font(.headline)
@@ -43,17 +47,19 @@ struct ArticleDetailView: View {
                         .padding(.top)
                 }
 
+                // Bookmark Button
                 Button(action: {
                     authViewModel.addBookmark(article)
                 }) {
-                    Text("Bookmark Article")
+                    Text(authViewModel.bookmarks.contains(where: { $0.id == article.id }) ? "Already Bookmarked" : "Bookmark Article")
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
+                        .background(authViewModel.bookmarks.contains(where: { $0.id == article.id }) ? Color.gray : Color.blue)
                         .cornerRadius(10)
                         .padding(.top)
                 }
+                .disabled(authViewModel.bookmarks.contains(where: { $0.id == article.id })) // Disable if already bookmarked
             }
             .padding()
         }
@@ -61,6 +67,7 @@ struct ArticleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
 
 /*
 #Preview {
