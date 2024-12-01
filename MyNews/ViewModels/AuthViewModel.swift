@@ -32,7 +32,8 @@ class AuthViewModel: ObservableObject {
                 if let error = error as NSError? {
                     self?.handleAuthError(error)
                 } else if let userID = result?.user.uid {
-                    self?.fetchBookmarks(userID: userID) // Fetch bookmarks on login
+                    self?.initializeUserDocumentIfMissing(userID: userID) // Reinitialize if missing
+                    self?.fetchBookmarks(userID: userID) // Fetch bookmarks
                     self?.isSignedIn = true
                 }
             }
@@ -45,7 +46,7 @@ class AuthViewModel: ObservableObject {
                 if let error = error {
                     self?.errorMessage = error.localizedDescription
                 } else if let userID = result?.user.uid {
-                    self?.initializeUserDocument(userID: userID)
+                    self?.initializeUserDocument(userID: userID) // Create user document
                     self?.isSignedIn = true
                 }
             }
@@ -203,7 +204,7 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-
+/*
     private func initializeUserDocument(userID: String) {
         let userDocRef = db.collection("users").document(userID)
         userDocRef.setData([
@@ -214,7 +215,22 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-
+*/
+    func initializeUserDocument(userID: String) {
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.setData([
+            "email": Auth.auth().currentUser?.email ?? "", // Email is saved here
+            "bookmarks": [],
+            "createdAt": FieldValue.serverTimestamp() // CreatedAt is set here
+        ]) { error in
+            if let error = error {
+                print("Error initializing user document: \(error.localizedDescription)")
+            } else {
+                print("User document initialized successfully.")
+            }
+        }
+    }
+/*
     private func initializeUserDocumentIfMissing(userID: String) {
         let userDocRef = db.collection("users").document(userID)
         userDocRef.getDocument { (document, error) in
@@ -225,7 +241,22 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-
+*/
+    func initializeUserDocumentIfMissing(userID: String) {
+        let userDocRef = db.collection("users").document(userID)
+        userDocRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error checking user document: \(error.localizedDescription)")
+                return
+            }
+            if let document = document, document.exists {
+                print("User document already exists.")
+            } else {
+                print("User document is missing. Reinitializing...")
+                self.initializeUserDocument(userID: userID)
+            }
+        }
+    }
 
     private func handleAuthError(_ error: NSError) {
         if let authErrorCode = AuthErrorCode(rawValue: error.code) {
